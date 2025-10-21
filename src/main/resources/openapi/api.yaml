@@ -1,0 +1,265 @@
+openapi: 3.0.0
+info:
+  title: Patient Management API
+  version: 1.0.0
+  description: API para gestión de pacientes, citas, historiales médicos y pagos
+servers:
+  - url: http://localhost:8282
+tags:
+  - name: Pacientes
+    description: Operaciones relacionadas con pacientes
+  - name: Citas
+    description: Operaciones relacionadas con citas médicas
+paths:
+  /patients/{id}:
+    get:
+      tags:
+        - Pacientes
+      summary: Consultar paciente por su id (cédula)
+      operationId: getPatientById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Cédula del paciente
+      responses:
+        '200':
+          description: Paciente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientResponse'
+        '204':
+          description: Paciente no encontrado
+        '403':
+          description: Acceso denegado
+        '500':
+          description: Error interno del servidor
+
+  /appointments:
+    get:
+      tags:
+        - Citas
+      summary: Listar todas las citas médicas
+      operationId: getAllAppointments
+      responses:
+        '200':
+          description: Lista de citas médicas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentResponse'
+        '500':
+          description: Error interno del servidor
+    post:
+      tags:
+        - Citas
+      summary: Crear una nueva cita médica
+      operationId: createAppointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentRequest'
+      responses:
+        '201':
+          description: Cita médica creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentResponse'
+        '400':
+          description: Datos de entrada inválidos
+        '500':
+          description: Error interno del servidor
+
+  /appointments/{id}:
+    get:
+      tags:
+        - Citas
+      summary: Consultar cita médica por ID
+      operationId: getAppointmentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID único de la cita médica
+      responses:
+        '200':
+          description: Cita médica encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentResponse'
+        '204':
+          description: Cita médica no encontrada
+        '500':
+          description: Error interno del servidor
+    put:
+      tags:
+        - Citas
+      summary: Actualizar cita médica completa
+      operationId: updateAppointment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID único de la cita médica
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentRequest'
+      responses:
+        '200':
+          description: Cita médica actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentResponse'
+        '400':
+          description: Datos de entrada inválidos
+        '204':
+          description: Cita médica no encontrada
+        '500':
+          description: Error interno del servidor
+    delete:
+      tags:
+        - Citas
+      summary: Eliminar cita médica
+      operationId: deleteAppointment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID único de la cita médica
+      responses:
+        '204':
+          description: Cita médica eliminada exitosamente
+        '404':
+          description: Cita médica no encontrada
+        '500':
+          description: Error interno del servidor
+
+components:
+  schemas:
+    PatientResponse:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - phone
+      properties:
+        id:
+          type: string
+          description: Cédula del paciente
+        name:
+          type: string
+          description: Nombre completo del paciente
+        email:
+          type: string
+          format: email
+          description: Correo electrónico del paciente
+        phone:
+          type: string
+          description: Teléfono del paciente
+
+    AppointmentRequest:
+      type: object
+      required:
+        - patientId
+        - branch
+        - specialty
+        - doctor
+        - date
+        - time
+      properties:
+        patientId:
+          type: string
+          minLength: 10
+          maxLength: 10
+          pattern: '^[0-9]{10}$'
+          description: Cédula del paciente
+          example: "1234567890"
+        branch:
+          type: string
+          minLength: 3
+          maxLength: 100
+          description: Sucursal donde desea atenderse
+          example: "Sucursal Norte"
+        specialty:
+          type: string
+          minLength: 3
+          maxLength: 50
+          description: Especialidad médica
+          example: "Traumatología"
+        doctor:
+          type: string
+          minLength: 3
+          maxLength: 100
+          description: Nombre del médico
+          example: "Dr. Juan Pérez"
+        date:
+          type: string
+          format: date
+          description: Fecha de la cita
+          example: "2024-01-15"
+        time:
+          type: string
+          pattern: '^([01]?[0-9]|2[0-3]):[0-5][0-9]$'
+          description: Hora de la cita en formato HH:MM
+          example: "14:30"
+
+    AppointmentResponse:
+      type: object
+      required:
+        - id
+        - patientId
+        - branch
+        - specialty
+        - doctor
+        - date
+        - time
+      properties:
+        id:
+          type: string
+          description: ID único de la cita médica
+          example: "apt-001"
+        patientId:
+          type: string
+          description: Cédula del paciente
+          example: "1234567890"
+        branch:
+          type: string
+          description: Sucursal donde desea atenderse
+          example: "Sucursal Norte"
+        specialty:
+          type: string
+          description: Especialidad médica
+          example: "Traumatología"
+        doctor:
+          type: string
+          description: Nombre del médico
+          example: "Dr. Juan Pérez"
+        date:
+          type: string
+          format: date
+          description: Fecha de la cita
+          example: "2024-01-15"
+        time:
+          type: string
+          description: Hora de la cita en formato HH:MM
+          example: "14:30"
