@@ -27,8 +27,7 @@ class AppointmentResourceTest {
                 .branch("Cumbayá")
                 .date(LocalDate.now())
                 .doctor("Dr. Edgar Vargas")
-                .time("12:00")
-                .patientId("1234546789");
+                .time("12:00");
         Mockito.when(appointmentService.getAll())
                 .thenReturn(List.of(appointment));
         RestAssured

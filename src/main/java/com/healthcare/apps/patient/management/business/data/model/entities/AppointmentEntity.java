@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -20,16 +22,23 @@ public class AppointmentEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_cita")
     private UUID id;
-    @Column(name = "cedula_paciente")
-    private String patientId;
+
+    @ManyToOne
+    @JoinColumn(name = "cedula_paciente")
+    private PatientEntity patient;
+
     @Column(name = "sucursal")
     private String branch;
+
     @Column(name = "especialidad")
     private String specialty;
+
     @Column(name = "medico")
     private String doctor;
+
     @Column(name = "fecha")
     private LocalDate date;
+
     @Column(name = "hora")
     private String time;
 }

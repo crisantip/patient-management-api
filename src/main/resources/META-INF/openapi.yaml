@@ -291,7 +291,7 @@ components:
       type: object
       required:
         - id
-        - patientId
+        - patient
         - branch
         - specialty
         - doctor
@@ -302,10 +302,8 @@ components:
           type: string
           description: ID único de la cita médica
           example: "apt-001"
-        patientId:
-          type: string
-          description: Cédula del paciente
-          example: "1234567890"
+        patient:
+          $ref: '#/components/schemas/PatientResponse'
         branch:
           type: string
           description: Sucursal donde desea atenderse
