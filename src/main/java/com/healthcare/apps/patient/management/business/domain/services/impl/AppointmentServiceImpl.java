@@ -59,7 +59,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
-
+        appointmentRepository.deleteById(id);
     }
 }
