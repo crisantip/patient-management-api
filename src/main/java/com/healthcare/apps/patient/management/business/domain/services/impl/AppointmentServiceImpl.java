@@ -45,7 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return Optional.ofNullable(request)
                 .map(appointmentMapper::toEntity)
                 .map(entity -> {
-                    entity.setDate(LocalDate.now());
+                    entity.setDate(LocalDate.now()); // Fecha de creación
                     appointmentRepository.persist(entity);
                     return entity;
                 })
@@ -55,7 +55,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentResponse update(UUID id, AppointmentRequest request) {
-        return null;
+        return Optional.ofNullable(appointmentRepository.findById(id))
+                .map(entity -> {
+                    appointmentMapper.updateEntityFromRequest(request, entity);
+                    // Fecha de modificacion
+                    appointmentRepository.persist(entity);
+                    return entity;
+                })
+                .map(appointmentMapper::toResponse)
+                .orElse(null);
     }
 
     @Override
