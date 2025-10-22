@@ -41,4 +41,7 @@ public class AppointmentEntity {
 
     @Column(name = "hora")
     private String time;
+    
+    @Column(name = "estado")
+    private String status = "ACTIVE";
 }

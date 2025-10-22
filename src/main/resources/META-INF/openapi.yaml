@@ -101,6 +101,8 @@ paths:
                 $ref: '#/components/schemas/AppointmentResponse'
         '400':
           description: Datos de entrada inválidos
+        '404':
+          description: Paciente no encontrado
         '500':
           description: Error interno del servidor
 
@@ -162,8 +164,8 @@ paths:
     delete:
       tags:
         - Citas
-      summary: Eliminar cita médica
-      operationId: deleteAppointment
+      summary: Cancelar cita médica
+      operationId: cancelAppointment
       parameters:
         - name: id
           in: path
@@ -173,7 +175,7 @@ paths:
           description: ID único de la cita médica
       responses:
         '204':
-          description: Cita médica eliminada exitosamente
+          description: Cita médica cancelada exitosamente
         '404':
           description: Cita médica no encontrada
         '500':
@@ -297,6 +299,7 @@ components:
         - doctor
         - date
         - time
+        - status
       properties:
         id:
           type: string
@@ -325,3 +328,10 @@ components:
           type: string
           description: Hora de la cita en formato HH:MM
           example: "14:30"
+        status:
+          type: string
+          description: Estado de la cita
+          example: "ACTIVE"
+          enum:
+            - ACTIVE
+            - CANCELLED

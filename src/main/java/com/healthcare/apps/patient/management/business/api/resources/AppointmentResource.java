@@ -32,11 +32,11 @@ public class AppointmentResource implements AppointmentsApi {
     }
 
     @Override
-    public Response deleteAppointment(String id) {
+    public Response cancelAppointment(String id) {
         return Optional.ofNullable(toUuid(id))
                 .map(uuid -> {
-                    appointmentService.delete(uuid);
-                    return Response.ok().build();
+                    appointmentService.cancel(uuid);
+                    return Response.noContent().build();
                 })
                 .orElseGet(() -> Response.serverError().build());
     }

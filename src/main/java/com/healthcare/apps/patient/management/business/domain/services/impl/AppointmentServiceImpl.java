@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.healthcare.apps.patient.management.business.data.repositories.AppointmentRepository;
+import com.healthcare.apps.patient.management.business.data.repositories.PatientRepository;
 import com.healthcare.apps.patient.management.business.domain.mappers.AppointmentMapper;
 import com.healthcare.apps.patient.management.business.domain.services.AppointmentService;
 import com.healthcare.apps.patient.management.model.AppointmentRequest;
@@ -22,12 +23,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     AppointmentRepository appointmentRepository;
 
     @Inject
+    PatientRepository patientRepository;
+
+    @Inject
     AppointmentMapper appointmentMapper;
 
     @Override
     public List<AppointmentResponse> getAll() {
         return appointmentRepository
-                .findAll()
+                .find("status", "ACTIVE")
                 .stream()
                 .map(appointmentMapper::toResponse)
                 .toList();
@@ -42,10 +46,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     @Transactional
     public AppointmentResponse create(AppointmentRequest request) {
+        var patient = Optional.ofNullable(patientRepository.findById(request.getPatientId()))
+                .orElseThrow(() -> new jakarta.ws.rs.NotFoundException("Paciente no encontrado: " + request.getPatientId()));
+        
         return Optional.ofNullable(request)
                 .map(appointmentMapper::toEntity)
                 .map(entity -> {
-                    entity.setDate(LocalDate.now()); // Fecha de creación
+                    entity.setPatient(patient);
+                    entity.setDate(LocalDate.now());
+                    entity.setStatus("ACTIVE");
                     appointmentRepository.persist(entity);
                     return entity;
                 })
@@ -69,7 +78,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public void delete(UUID id) {
-        appointmentRepository.deleteById(id);
+    public void cancel(UUID id) {
+        Optional.ofNullable(appointmentRepository.findById(id))
+                .ifPresent(entity -> {
+                    entity.setStatus("CANCELLED");
+                    appointmentRepository.persist(entity);
+                });
     }
 }
