@@ -54,6 +54,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public AppointmentResponse update(UUID id, AppointmentRequest request) {
         return Optional.ofNullable(appointmentRepository.findById(id))
                 .map(entity -> {
