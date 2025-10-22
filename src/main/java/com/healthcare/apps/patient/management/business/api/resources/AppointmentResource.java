@@ -40,7 +40,7 @@ public class AppointmentResource implements AppointmentsApi {
         return Optional.ofNullable(appointmentService.getAll())
                 .filter(appointments -> !appointments.isEmpty())
                 .map(appointments -> Response.ok(appointments).build())
-                .orElse(Response.noContent().build());
+                .orElseGet(() -> Response.noContent().build());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AppointmentResource implements AppointmentsApi {
         return Optional.ofNullable(toUuid(id))
                 .flatMap(uuid -> appointmentService.getById(uuid))
                 .map(appointment -> Response.ok(appointment).build())
-                .orElse(Response.noContent().build());
+                .orElseGet(() -> Response.noContent().build());
     }
 
     @Override
