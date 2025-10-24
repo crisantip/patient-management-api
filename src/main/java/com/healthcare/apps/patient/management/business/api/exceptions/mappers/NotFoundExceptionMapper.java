@@ -1,8 +1,9 @@
-package com.healthcare.apps.patient.management.business.api.exceptions;
+package com.healthcare.apps.patient.management.business.api.exceptions.mappers;
 
 import java.util.List;
 
-import jakarta.ws.rs.NotFoundException;
+import com.healthcare.apps.patient.management.business.api.exceptions.ErrorResponse;
+import com.healthcare.apps.patient.management.business.api.exceptions.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;

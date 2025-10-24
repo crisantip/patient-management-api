@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.healthcare.apps.patient.management.business.api.exceptions.ConflictException;
+import com.healthcare.apps.patient.management.business.api.exceptions.NotFoundException;
 import com.healthcare.apps.patient.management.business.data.repositories.AppointmentRepository;
 import com.healthcare.apps.patient.management.business.data.repositories.PatientRepository;
 import com.healthcare.apps.patient.management.business.domain.mappers.AppointmentMapper;
@@ -47,7 +49,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     public AppointmentResponse create(AppointmentRequest request) {
         var patient = Optional.ofNullable(patientRepository.findById(request.getPatientId()))
-                .orElseThrow(() -> new jakarta.ws.rs.NotFoundException("Paciente no encontrado: " + request.getPatientId()));
+                .orElseThrow(() -> new NotFoundException("Paciente no encontrado: " + request.getPatientId()));
+        
+        // Validar disponibilidad
+        var existingAppointment = appointmentRepository
+                .find("doctor = ?1 and date = ?2 and time = ?3 and status = 'ACTIVE'", 
+                      request.getDoctor(), request.getDate(), request.getTime())
+                .firstResultOptional();
+        
+        if (existingAppointment.isPresent()) {
+            throw new ConflictException(
+                "El doctor ya tiene una cita agendada para esa fecha y hora");
+        }
         
         return Optional.ofNullable(request)
                 .map(appointmentMapper::toEntity)

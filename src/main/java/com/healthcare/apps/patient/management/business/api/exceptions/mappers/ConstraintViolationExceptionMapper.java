@@ -1,5 +1,6 @@
-package com.healthcare.apps.patient.management.business.api.exceptions;
+package com.healthcare.apps.patient.management.business.api.exceptions.mappers;
 
+import com.healthcare.apps.patient.management.business.api.exceptions.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
