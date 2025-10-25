@@ -35,3 +35,22 @@ services:
       fi &&
       liquibase --search-path=/liquibase/changelog update
       '
+  api:
+    image: csip/patient-management-api:1.0.0
+    container_name: patient-management-api
+    ports:
+      - "8282:8282"
+    environment:
+      JAVA_OPTS_APPEND: "-Dquarkus.profile=prod -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+      APP_CONFIG_DATABASE_SERVER: ${APP_CONFIG_DATABASE_SERVER}
+      APP_CONFIG_DATABASE_PORT: ${APP_CONFIG_DATABASE_PORT}
+      APP_CONFIG_DATABASE_NAME: ${APP_CONFIG_DATABASE_NAME}
+      APP_CONFIG_DATABASE_USERNAME: ${APP_CONFIG_DATABASE_USERNAME}
+      APP_CONFIG_DATABASE_PASSWORD: ${APP_CONFIG_DATABASE_PASSWORD}
+      APP_CONFIG_CUSTOM: ${APP_CONFIG_CUSTOM}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      liquibase:
+        condition: service_completed_successfully
