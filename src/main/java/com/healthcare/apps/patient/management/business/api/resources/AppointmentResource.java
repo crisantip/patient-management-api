@@ -7,7 +7,6 @@ import com.healthcare.apps.patient.management.business.domain.services.Appointme
 import com.healthcare.apps.patient.management.model.AppointmentRequest;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 
@@ -57,11 +56,4 @@ public class AppointmentResource implements AppointmentsApi {
                 .orElseGet(() -> Response.noContent().build());
     }
 
-    @Override
-    public Response updateAppointment(String id, AppointmentRequest appointmentRequest) {
-        return Optional.ofNullable(toUuid(id))
-                .map(uuid -> appointmentService.update(uuid, appointmentRequest))
-                .map(response -> Response.ok(response).build())
-                .orElseThrow(() -> new NotFoundException("Cita con id '" + id + "' no existe."));
-    }
 }

@@ -83,20 +83,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public AppointmentResponse update(UUID id, AppointmentRequest request) {
-        return Optional.ofNullable(appointmentRepository.findById(id))
-                .map(entity -> {
-                    appointmentMapper.updateEntityFromRequest(request, entity);
-                    entity.setModificationDate(LocalDateTime.now());
-                    appointmentRepository.persist(entity);
-                    return entity;
-                })
-                .map(appointmentMapper::toResponse)
-                .orElse(null);
-    }
-
-    @Override
-    @Transactional
     public void cancel(UUID id) {
         Optional.ofNullable(appointmentRepository.findById(id))
                 .ifPresent(entity -> {

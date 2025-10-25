@@ -15,7 +15,5 @@ public interface AppointmentService {
 
     AppointmentResponse create(AppointmentRequest request);
 
-    AppointmentResponse update(UUID id, AppointmentRequest request);
-
     void cancel(UUID id);
 }

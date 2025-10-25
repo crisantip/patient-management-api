@@ -132,37 +132,6 @@ paths:
           description: Cita médica no encontrada
         '500':
           description: Error interno del servidor
-    put:
-      tags:
-        - Citas
-      summary: Actualizar cita médica completa
-      operationId: updateAppointment
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID único de la cita médica
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AppointmentRequest'
-      responses:
-        '200':
-          description: Cita médica actualizada exitosamente
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AppointmentResponse'
-        '400':
-          description: Datos de entrada inválidos
-        '204':
-          description: Cita médica no encontrada
-        '500':
-          description: Error interno del servidor
     delete:
       tags:
         - Citas
