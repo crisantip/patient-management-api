@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.healthcare.apps.patient.management.business.api.exceptions.ConflictException;
 import com.healthcare.apps.patient.management.business.api.exceptions.NotFoundException;
 import com.healthcare.apps.patient.management.business.data.repositories.AppointmentRepository;
+import com.healthcare.apps.patient.management.business.data.repositories.CalendarizationRepository;
 import com.healthcare.apps.patient.management.business.data.repositories.PatientRepository;
 import com.healthcare.apps.patient.management.business.domain.mappers.AppointmentMapper;
 import com.healthcare.apps.patient.management.business.domain.services.AppointmentService;
@@ -26,6 +27,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Inject
     PatientRepository patientRepository;
+
+    @Inject
+    CalendarizationRepository calendarizationRepository;
 
     @Inject
     AppointmentMapper appointmentMapper;
@@ -51,6 +55,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         var patient = Optional.ofNullable(patientRepository.findById(request.getPatientId()))
                 .orElseThrow(() -> new NotFoundException("Paciente no encontrado: " + request.getPatientId()));
         
+        var calendarization = Optional.ofNullable(calendarizationRepository.findById(request.getCalendarizationId()))
+                .orElseThrow(() -> new NotFoundException("Calendarización no encontrada: " + request.getCalendarizationId()));
+        
         // Validar que la calendarización esté disponible
         var existingAppointment = appointmentRepository
                 .find("calendarization.id = ?1 and status = 'ACTIVE'", request.getCalendarizationId())
@@ -64,6 +71,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(appointmentMapper::toEntity)
                 .map(entity -> {
                     entity.setPatient(patient);
+                    entity.setCalendarization(calendarization);
                     entity.setCreationDate(LocalDateTime.now());
                     entity.setStatus("ACTIVE");
                     appointmentRepository.persist(entity);
