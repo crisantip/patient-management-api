@@ -18,12 +18,25 @@ quarkus:
   datasource:
     db-kind: postgresql
     username: postgres
-    password: 12345678900
+    password: 123456789
     jdbc:
       url: jdbc:postgresql://localhost:5432/db_patient_management
   hibernate-orm:
     schema-management:
       strategy: none
+
+  log:
+    category:
+      "com.healthcare.apps.patient":
+        level: TRACE
+      "org.hibernate.SQL":
+        level: TRACE
+      "org.hibernate.type.descriptor.sql.BasicBinder":
+        level: TRACE
+      "io.smallrye.jwt":
+        level: TRACE
+      "io.quarkus.security":
+        level: TRACE
 
 mp:
   jwt:
@@ -31,6 +44,11 @@ mp:
       publickey:
         location: classpath:keys/publicKey.pem
       issuer: csip
+      clock-skew: PT1S
+      max-time-to-live: PT10M
+    require:
+      iat: true
+      exp: true
 smallrye:
   jwt:
     sign:

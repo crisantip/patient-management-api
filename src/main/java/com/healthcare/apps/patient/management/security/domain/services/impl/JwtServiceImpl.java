@@ -24,7 +24,7 @@ public class JwtServiceImpl implements JwtService {
 				.issuer("csip")
 				.upn(entity.getUsername())
 				.groups(roles)
-				.issuedAt(System.currentTimeMillis())
+				.issuedAt(System.currentTimeMillis() / 1000)
 				.expiresIn(Duration.ofMinutes(5))
 				.sign();
 	}

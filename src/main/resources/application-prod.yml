@@ -44,6 +44,9 @@ mp:
       publickey:
         location: classpath:keys/publicKey.pem
       issuer: csip
+      #clock-skew: PT30S
+    require:
+      iat: true
 smallrye:
   jwt:
     sign:
