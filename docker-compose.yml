@@ -1,5 +1,5 @@
 services:
-  postgres:
+  q-postgres:
     image: postgres:15
     container_name: container-postgres
     environment:
@@ -14,7 +14,7 @@ services:
       timeout: 20s
       retries: 10
 
-  liquibase:
+  q-liquibase:
     image: liquibase/liquibase:4.33
     container_name: container-liquibase
     volumes:
@@ -25,7 +25,7 @@ services:
       LIQUIBASE_COMMAND_USERNAME: ${APP_CONFIG_DATABASE_USERNAME}
       LIQUIBASE_COMMAND_PASSWORD: ${APP_CONFIG_DATABASE_PASSWORD}
     depends_on:
-      postgres:
+      q-postgres:
         condition: service_healthy
     restart: "no"
     command: |
@@ -35,7 +35,7 @@ services:
       fi &&
       liquibase --search-path=/liquibase/changelog update
       '
-  api:
+  q-api:
     image: csip/patient-management-api:1.0.0
     container_name: patient-management-api
     ports:
@@ -50,7 +50,7 @@ services:
       APP_CONFIG_CUSTOM: ${APP_CONFIG_CUSTOM}
     restart: unless-stopped
     depends_on:
-      postgres:
+      q-postgres:
         condition: service_healthy
-      liquibase:
+      q-liquibase:
         condition: service_completed_successfully
