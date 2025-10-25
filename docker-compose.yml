@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: container-postgres
+    environment:
+      POSTGRES_DB: ${APP_CONFIG_DATABASE_NAME}
+      POSTGRES_USER: ${APP_CONFIG_DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${APP_CONFIG_DATABASE_PASSWORD}
+    ports:
+      - "${APP_CONFIG_DATABASE_PORT}:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${APP_CONFIG_DATABASE_USERNAME}"]
+      timeout: 20s
+      retries: 10
+
+  liquibase:
+    image: liquibase/liquibase:4.33
+    container_name: container-liquibase
+    volumes:
+      - ./src/main/resources/db/changelog:/liquibase/changelog
+    environment:
+      LIQUIBASE_COMMAND_CHANGELOG_FILE: db.changelog-master.xml
+      LIQUIBASE_COMMAND_URL: jdbc:postgresql://${APP_CONFIG_DATABASE_SERVER}:${APP_CONFIG_DATABASE_PORT}/${APP_CONFIG_DATABASE_NAME}
+      LIQUIBASE_COMMAND_USERNAME: ${APP_CONFIG_DATABASE_USERNAME}
+      LIQUIBASE_COMMAND_PASSWORD: ${APP_CONFIG_DATABASE_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    command: |
+      sh -c '
+      if [ ! -f /liquibase/lib/postgresql.jar ]; then
+        curl -sL https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar -o /liquibase/lib/postgresql.jar
+      fi &&
+      liquibase --search-path=/liquibase/changelog update
+      '

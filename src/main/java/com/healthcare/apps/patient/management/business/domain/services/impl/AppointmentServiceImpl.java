@@ -1,6 +1,6 @@
 package com.healthcare.apps.patient.management.business.domain.services.impl;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,22 +51,20 @@ public class AppointmentServiceImpl implements AppointmentService {
         var patient = Optional.ofNullable(patientRepository.findById(request.getPatientId()))
                 .orElseThrow(() -> new NotFoundException("Paciente no encontrado: " + request.getPatientId()));
         
-        // Validar disponibilidad
+        // Validar que la calendarización esté disponible
         var existingAppointment = appointmentRepository
-                .find("doctor = ?1 and date = ?2 and time = ?3 and status = 'ACTIVE'", 
-                      request.getDoctor(), request.getDate(), request.getTime())
+                .find("calendarization.id = ?1 and status = 'ACTIVE'", request.getCalendarizationId())
                 .firstResultOptional();
         
         if (existingAppointment.isPresent()) {
-            throw new ConflictException(
-                "El doctor ya tiene una cita agendada para esa fecha y hora");
+            throw new ConflictException("El horario ya está ocupado");
         }
         
         return Optional.ofNullable(request)
                 .map(appointmentMapper::toEntity)
                 .map(entity -> {
                     entity.setPatient(patient);
-                    entity.setDate(LocalDate.now());
+                    entity.setCreationDate(LocalDateTime.now());
                     entity.setStatus("ACTIVE");
                     appointmentRepository.persist(entity);
                     return entity;
@@ -81,7 +79,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return Optional.ofNullable(appointmentRepository.findById(id))
                 .map(entity -> {
                     appointmentMapper.updateEntityFromRequest(request, entity);
-                    // Fecha de modificacion
+                    entity.setModificationDate(LocalDateTime.now());
                     appointmentRepository.persist(entity);
                     return entity;
                 })
@@ -95,6 +93,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional.ofNullable(appointmentRepository.findById(id))
                 .ifPresent(entity -> {
                     entity.setStatus("CANCELLED");
+                    entity.setModificationDate(LocalDateTime.now());
                     appointmentRepository.persist(entity);
                 });
     }

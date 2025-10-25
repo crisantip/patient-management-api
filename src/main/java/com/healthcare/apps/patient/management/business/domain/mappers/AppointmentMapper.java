@@ -1,5 +1,9 @@
 package com.healthcare.apps.patient.management.business.domain.mappers;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 import com.healthcare.apps.patient.management.business.data.model.entities.AppointmentEntity;
 import com.healthcare.apps.patient.management.model.AppointmentRequest;
 import com.healthcare.apps.patient.management.model.AppointmentResponse;
@@ -15,4 +19,8 @@ public interface AppointmentMapper {
     AppointmentEntity toEntity(AppointmentRequest appointmentRequest);
 
     void updateEntityFromRequest(AppointmentRequest request, @MappingTarget AppointmentEntity entity);
+
+    default OffsetDateTime map(LocalDateTime value) {
+        return value != null ? value.atOffset(ZoneOffset.UTC) : null;
+    }
 }

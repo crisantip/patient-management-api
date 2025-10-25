@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="007" author="system">
+        <insert tableName="tb_sucursal">
+            <column name="nombre" value="Centro"/>
+            <column name="direccion" value="Av. Principal 123"/>
+        </insert>
+        <insert tableName="tb_sucursal">
+            <column name="nombre" value="Norte"/>
+            <column name="direccion" value="Calle Norte 456"/>
+        </insert>
+        <insert tableName="tb_sucursal">
+            <column name="nombre" value="Sur"/>
+            <column name="direccion" value="Av. Sur 789"/>
+        </insert>
+        <insert tableName="tb_sucursal">
+            <column name="nombre" value="Oeste"/>
+            <column name="direccion" value="Calle Oeste 321"/>
+        </insert>
+
+        <insert tableName="tb_especialidad">
+            <column name="nombre" value="Cardiología"/>
+        </insert>
+        <insert tableName="tb_especialidad">
+            <column name="nombre" value="Dermatología"/>
+        </insert>
+        <insert tableName="tb_especialidad">
+            <column name="nombre" value="Medicina General"/>
+        </insert>
+        <insert tableName="tb_especialidad">
+            <column name="nombre" value="Ginecología"/>
+        </insert>
+        <insert tableName="tb_especialidad">
+            <column name="nombre" value="Ortopedia"/>
+        </insert>
+
+        <insert tableName="tb_medico">
+            <column name="nombre" value="Dr. Roberto Silva"/>
+            <column name="cedula" value="1001234567"/>
+            <column name="id_especialidad" value="1"/>
+        </insert>
+        <insert tableName="tb_medico">
+            <column name="nombre" value="Dra. Patricia Ruiz"/>
+            <column name="cedula" value="1007654321"/>
+            <column name="id_especialidad" value="2"/>
+        </insert>
+        <insert tableName="tb_medico">
+            <column name="nombre" value="Dr. Carlos Mendoza"/>
+            <column name="cedula" value="1011223344"/>
+            <column name="id_especialidad" value="3"/>
+        </insert>
+        <insert tableName="tb_medico">
+            <column name="nombre" value="Dra. Ana Vargas"/>
+            <column name="cedula" value="1044332211"/>
+            <column name="id_especialidad" value="4"/>
+        </insert>
+        <insert tableName="tb_medico">
+            <column name="nombre" value="Dr. Miguel Herrera"/>
+            <column name="cedula" value="1055667788"/>
+            <column name="id_especialidad" value="5"/>
+        </insert>
+
+        <insert tableName="tb_calendarizacion">
+            <column name="id_medico" value="1"/>
+            <column name="id_sucursal" value="1"/>
+            <column name="horario" value="2024-02-19 09:00:00"/>
+        </insert>
+        <insert tableName="tb_calendarizacion">
+            <column name="id_medico" value="2"/>
+            <column name="id_sucursal" value="2"/>
+            <column name="horario" value="2024-02-20 14:30:00"/>
+        </insert>
+        <insert tableName="tb_calendarizacion">
+            <column name="id_medico" value="3"/>
+            <column name="id_sucursal" value="3"/>
+            <column name="horario" value="2024-02-21 10:15:00"/>
+        </insert>
+        <insert tableName="tb_calendarizacion">
+            <column name="id_medico" value="4"/>
+            <column name="id_sucursal" value="1"/>
+            <column name="horario" value="2024-02-22 16:00:00"/>
+        </insert>
+        <insert tableName="tb_calendarizacion">
+            <column name="id_medico" value="5"/>
+            <column name="id_sucursal" value="4"/>
+            <column name="horario" value="2024-02-23 11:45:00"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

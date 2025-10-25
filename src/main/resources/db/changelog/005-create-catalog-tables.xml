@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="005" author="system">
+        <createTable tableName="tb_sucursal">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nombre" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="direccion" type="VARCHAR(500)"/>
+            <column name="activo" type="BOOLEAN" defaultValue="true"/>
+        </createTable>
+
+        <createTable tableName="tb_especialidad">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nombre" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="activo" type="BOOLEAN" defaultValue="true"/>
+        </createTable>
+
+        <createTable tableName="tb_medico">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nombre" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cedula" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="id_especialidad" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activo" type="BOOLEAN" defaultValue="true"/>
+        </createTable>
+
+        <createTable tableName="tb_calendarizacion">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_medico" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_sucursal" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="horario" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activo" type="BOOLEAN" defaultValue="true"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="tb_medico"
+                                 baseColumnNames="id_especialidad"
+                                 constraintName="fk_medico_especialidad"
+                                 referencedTableName="tb_especialidad"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="tb_calendarizacion"
+                                 baseColumnNames="id_medico"
+                                 constraintName="fk_calendarizacion_medico"
+                                 referencedTableName="tb_medico"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="tb_calendarizacion"
+                                 baseColumnNames="id_sucursal"
+                                 constraintName="fk_calendarizacion_sucursal"
+                                 referencedTableName="tb_sucursal"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

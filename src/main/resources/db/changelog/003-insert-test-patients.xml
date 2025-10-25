@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="003" author="system">
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="1234567890"/>
+            <column name="nombre" value="Juan Pérez"/>
+            <column name="correo" value="juan.perez@email.com"/>
+            <column name="telefono" value="0912345678"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="0987654321"/>
+            <column name="nombre" value="María García"/>
+            <column name="correo" value="maria.garcia@email.com"/>
+            <column name="telefono" value="0987654321"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="1122334455"/>
+            <column name="nombre" value="Carlos López"/>
+            <column name="correo" value="carlos.lopez@email.com"/>
+            <column name="telefono" value="0911223344"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="4433221100"/>
+            <column name="nombre" value="Ana Rodríguez"/>
+            <column name="correo" value="ana.rodriguez@email.com"/>
+            <column name="telefono" value="0944332211"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="5566778899"/>
+            <column name="nombre" value="Luis Martínez"/>
+            <column name="correo" value="luis.martinez@email.com"/>
+            <column name="telefono" value="0955667788"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="8877665544"/>
+            <column name="nombre" value="Carmen Sánchez"/>
+            <column name="correo" value="carmen.sanchez@email.com"/>
+            <column name="telefono" value="0988776655"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="9988776655"/>
+            <column name="nombre" value="Pedro Gómez"/>
+            <column name="correo" value="pedro.gomez@email.com"/>
+            <column name="telefono" value="0999887766"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="6677889900"/>
+            <column name="nombre" value="Laura Fernández"/>
+            <column name="correo" value="laura.fernandez@email.com"/>
+            <column name="telefono" value="0966778899"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="3344556677"/>
+            <column name="nombre" value="Miguel Torres"/>
+            <column name="correo" value="miguel.torres@email.com"/>
+            <column name="telefono" value="0933445566"/>
+        </insert>
+        <insert tableName="tb_paciente">
+            <column name="cedula" value="7788990011"/>
+            <column name="nombre" value="Isabel Morales"/>
+            <column name="correo" value="isabel.morales@email.com"/>
+            <column name="telefono" value="0977889900"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

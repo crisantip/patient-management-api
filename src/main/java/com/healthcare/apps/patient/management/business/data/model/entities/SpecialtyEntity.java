@@ -2,22 +2,24 @@ package com.healthcare.apps.patient.management.business.data.model.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tb_paciente")
-public class PatientEntity {
+@Table(name = "tb_especialidad")
+public class SpecialtyEntity {
 
     @Id
-    @Column(name = "cedula")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "nombre")
     private String name;
-    @Column(name = "correo")
-    private String email;
-    @Column(name = "telefono")
-    private String phone;
+
+    @Column(name = "activo")
+    private Boolean active = true;
 }

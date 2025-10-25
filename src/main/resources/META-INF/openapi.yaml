@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Patient Management API
   version: 1.0.0
-  description: API para gestión de pacientes, citas, historiales médicos y pagos
+  description: API para gestión de citas de pacientes
 servers:
   - url: http://localhost:8282
 tags:
@@ -104,7 +104,7 @@ paths:
         '404':
           description: Paciente no encontrado
         '409':
-          description: El doctor ya tiene una cita agendada para esa fecha y hora
+          description: El horario ya está ocupado
         '500':
           description: Error interno del servidor
 
@@ -249,11 +249,7 @@ components:
       type: object
       required:
         - patientId
-        - branch
-        - specialty
-        - doctor
-        - date
-        - time
+        - calendarizationId
       properties:
         patientId:
           type: string
@@ -262,45 +258,19 @@ components:
           pattern: '^[0-9]{10}$'
           description: Cédula del paciente
           example: "1234567890"
-        branch:
-          type: string
-          minLength: 3
-          maxLength: 100
-          description: Sucursal donde desea atenderse
-          example: "Sucursal Norte"
-        specialty:
-          type: string
-          minLength: 3
-          maxLength: 50
-          description: Especialidad médica
-          example: "Traumatología"
-        doctor:
-          type: string
-          minLength: 3
-          maxLength: 100
-          description: Nombre del médico
-          example: "Dr. Juan Pérez"
-        date:
-          type: string
-          format: date
-          description: Fecha de la cita
-          example: "2024-01-15"
-        time:
-          type: string
-          pattern: '^([01]?[0-9]|2[0-3]):[0-5][0-9]$'
-          description: Hora de la cita en formato HH:MM
-          example: "14:30"
+        calendarizationId:
+          type: integer
+          format: int64
+          description: ID de la calendarización (horario disponible)
+          example: 1
 
     AppointmentResponse:
       type: object
       required:
         - id
         - patient
-        - branch
-        - specialty
-        - doctor
-        - date
-        - time
+        - calendarization
+        - creationDate
         - status
       properties:
         id:
@@ -309,27 +279,18 @@ components:
           example: "apt-001"
         patient:
           $ref: '#/components/schemas/PatientResponse'
-        branch:
+        calendarization:
+          $ref: '#/components/schemas/CalendarizationResponse'
+        creationDate:
           type: string
-          description: Sucursal donde desea atenderse
-          example: "Sucursal Norte"
-        specialty:
+          format: date-time
+          description: Fecha y hora de creación de la cita
+          example: "2024-01-15T14:30:00"
+        modificationDate:
           type: string
-          description: Especialidad médica
-          example: "Traumatología"
-        doctor:
-          type: string
-          description: Nombre del médico
-          example: "Dr. Juan Pérez"
-        date:
-          type: string
-          format: date
-          description: Fecha de la cita
-          example: "2024-01-15"
-        time:
-          type: string
-          description: Hora de la cita en formato HH:MM
-          example: "14:30"
+          format: date-time
+          description: Fecha y hora de última modificación
+          example: "2024-01-15T15:00:00"
         status:
           type: string
           description: Estado de la cita
@@ -337,3 +298,102 @@ components:
           enum:
             - ACTIVE
             - CANCELLED
+
+    CalendarizationResponse:
+      type: object
+      required:
+        - id
+        - doctor
+        - branch
+        - schedule
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID de la calendarización
+          example: 1
+        doctor:
+          $ref: '#/components/schemas/DoctorResponse'
+        branch:
+          $ref: '#/components/schemas/BranchResponse'
+        schedule:
+          type: string
+          format: date-time
+          description: Fecha y hora del horario
+          example: "2024-01-15T14:30:00"
+        active:
+          type: boolean
+          description: Estado activo de la calendarización
+          example: true
+
+    DoctorResponse:
+      type: object
+      required:
+        - id
+        - name
+        - cedula
+        - specialty
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID del médico
+          example: 1
+        name:
+          type: string
+          description: Nombre del médico
+          example: "Dr. Juan Pérez"
+        cedula:
+          type: string
+          description: Cédula del médico
+          example: "1001234567"
+        specialty:
+          $ref: '#/components/schemas/SpecialtyResponse'
+        active:
+          type: boolean
+          description: Estado activo del médico
+          example: true
+
+    BranchResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID de la sucursal
+          example: 1
+        name:
+          type: string
+          description: Nombre de la sucursal
+          example: "Sucursal Norte"
+        address:
+          type: string
+          description: Dirección de la sucursal
+          example: "Av. Principal 123"
+        active:
+          type: boolean
+          description: Estado activo de la sucursal
+          example: true
+
+    SpecialtyResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID de la especialidad
+          example: 1
+        name:
+          type: string
+          description: Nombre de la especialidad
+          example: "Traumatología"
+        active:
+          type: boolean
+          description: Estado activo de la especialidad
+          example: true

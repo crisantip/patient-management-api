@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="002" author="system">
+        <createTable tableName="tb_cita">
+            <column name="id_cita" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cedula_paciente" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_calendarizacion" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha_creacion" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha_modificacion" type="TIMESTAMP"/>
+            <column name="estado" type="VARCHAR(20)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <addForeignKeyConstraint baseTableName="tb_cita"
+                                 baseColumnNames="cedula_paciente"
+                                 constraintName="fk_cita_paciente"
+                                 referencedTableName="tb_paciente"
+                                 referencedColumnNames="cedula"/>
+
+        <addForeignKeyConstraint baseTableName="tb_cita"
+                                 baseColumnNames="id_calendarizacion"
+                                 constraintName="fk_cita_calendarizacion"
+                                 referencedTableName="tb_calendarizacion"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
