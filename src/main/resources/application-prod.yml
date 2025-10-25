@@ -17,13 +17,26 @@ quarkus:
           policy: authenticated
   datasource:
     db-kind: postgresql
-    username: postgres
-    password: 12345678900
+    username: ${APP_CONFIG_DATABASE_USERNAME}
+    password: ${APP_CONFIG_DATABASE_PASSWORD}
     jdbc:
-      url: jdbc:postgresql://localhost:5432/db_patient_management
+      url: jdbc:postgresql://${APP_CONFIG_DATABASE_SERVER}:${APP_CONFIG_DATABASE_PORT}/${APP_CONFIG_DATABASE_NAME}
   hibernate-orm:
     schema-management:
       strategy: none
+
+  log:
+    category:
+      "com.healthcare.apps.patient":
+        level: TRACE
+      "org.hibernate.SQL":
+        level: TRACE
+      "org.hibernate.type.descriptor.sql.BasicBinder":
+        level: TRACE
+      "io.smallrye.jwt":
+        level: TRACE
+      "io.quarkus.security":
+        level: TRACE
 
 mp:
   jwt:
