@@ -10,6 +10,8 @@ tags:
     description: Operaciones relacionadas con pacientes
   - name: Citas
     description: Operaciones relacionadas con citas médicas
+  - name: Calendarizaciones
+    description: Operaciones relacionadas con calendarizaciones médicas
 paths:
   /patients:
     post:
@@ -149,6 +151,124 @@ paths:
           description: Cita médica cancelada exitosamente
         '404':
           description: Cita médica no encontrada
+        '500':
+          description: Error interno del servidor
+
+  /calendarizations:
+    get:
+      tags:
+        - Calendarizaciones
+      summary: Listar todas las calendarizaciones
+      operationId: getAllCalendarizations
+      responses:
+        '200':
+          description: Lista de calendarizaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarizationResponse'
+        '500':
+          description: Error interno del servidor
+    post:
+      tags:
+        - Calendarizaciones
+      summary: Crear una nueva calendarización
+      operationId: createCalendarization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarizationRequest'
+      responses:
+        '201':
+          description: Calendarización creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarizationResponse'
+        '400':
+          description: Datos de entrada inválidos
+        '500':
+          description: Error interno del servidor
+
+  /calendarizations/{id}:
+    get:
+      tags:
+        - Calendarizaciones
+      summary: Consultar calendarización por ID
+      operationId: getCalendarizationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID de la calendarización
+      responses:
+        '200':
+          description: Calendarización encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarizationResponse'
+        '204':
+          description: Calendarización no encontrada
+        '500':
+          description: Error interno del servidor
+    put:
+      tags:
+        - Calendarizaciones
+      summary: Actualizar calendarización
+      operationId: updateCalendarization
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID de la calendarización
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarizationRequest'
+      responses:
+        '200':
+          description: Calendarización actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarizationResponse'
+        '400':
+          description: Datos de entrada inválidos
+        '204':
+          description: Calendarización no encontrada
+        '500':
+          description: Error interno del servidor
+    delete:
+      tags:
+        - Calendarizaciones
+      summary: Eliminar calendarización
+      operationId: deleteCalendarization
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID de la calendarización
+      responses:
+        '204':
+          description: Calendarización eliminada exitosamente
+        '404':
+          description: Calendarización no encontrada
         '500':
           description: Error interno del servidor
 
@@ -366,3 +486,26 @@ components:
           type: boolean
           description: Estado activo de la especialidad
           example: true
+
+    CalendarizationRequest:
+      type: object
+      required:
+        - doctorId
+        - branchId
+        - schedule
+      properties:
+        doctorId:
+          type: integer
+          format: int64
+          description: ID del médico
+          example: 1
+        branchId:
+          type: integer
+          format: int64
+          description: ID de la sucursal
+          example: 1
+        schedule:
+          type: string
+          format: date-time
+          description: Fecha y hora del horario
+          example: "2024-01-15T14:30:00"
