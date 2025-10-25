@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="011" author="system">
+        <createView viewName="vw_user_authorities">
+            <![CDATA[
+            SELECT
+                u.id AS usuario_id,
+                u.username,
+                u.name AS nombre,
+                r.id as rol_id,
+                r.name AS rol_name
+            FROM seg_usuario u
+                JOIN seg_usuario_rol ur ON u.id = ur.usuario_id
+                JOIN seg_rol r ON ur.rol_id = r.id
+            ORDER BY u.id, r.id
+            ]]>
+        </createView>
+    </changeSet>
+
+</databaseChangeLog>

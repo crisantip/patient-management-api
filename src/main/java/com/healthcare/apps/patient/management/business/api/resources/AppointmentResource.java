@@ -6,6 +6,7 @@ import com.healthcare.apps.patient.management.api.AppointmentsApi;
 import com.healthcare.apps.patient.management.business.domain.services.AppointmentService;
 import com.healthcare.apps.patient.management.model.AppointmentRequest;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
@@ -18,6 +19,7 @@ public class AppointmentResource implements AppointmentsApi {
     AppointmentService appointmentService;
 
     @Override
+    @RolesAllowed({"APPOINTMENT_CREATE"})
     public Response createAppointment(AppointmentRequest appointmentRequest) {
         return Optional.ofNullable(appointmentService.create(appointmentRequest))
                 .map(response -> {
@@ -31,6 +33,7 @@ public class AppointmentResource implements AppointmentsApi {
     }
 
     @Override
+    @RolesAllowed({"APPOINTMENT_CANCEL"})
     public Response cancelAppointment(String id) {
         return Optional.ofNullable(toUuid(id))
                 .map(uuid -> {
@@ -41,6 +44,7 @@ public class AppointmentResource implements AppointmentsApi {
     }
 
     @Override
+    @RolesAllowed({"APPOINTMENT_LIST"})
     public Response getAllAppointments() {
         return Optional.ofNullable(appointmentService.getAll())
                 .filter(appointments -> !appointments.isEmpty())
@@ -49,6 +53,7 @@ public class AppointmentResource implements AppointmentsApi {
     }
 
     @Override
+    @RolesAllowed({"APPOINTMENT_READ"})
     public Response getAppointmentById(String id) {
         return Optional.ofNullable(toUuid(id))
                 .flatMap(uuid -> appointmentService.getById(uuid))

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="010" author="system">
+        <!-- Acciones de Pacientes -->
+        <insert tableName="seg_rol">
+            <column name="name" value="PATIENT_CREATE"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="PATIENT_READ"/>
+        </insert>
+        
+        <!-- Acciones de Citas -->
+        <insert tableName="seg_rol">
+            <column name="name" value="APPOINTMENT_CREATE"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="APPOINTMENT_READ"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="APPOINTMENT_LIST"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="APPOINTMENT_CANCEL"/>
+        </insert>
+        
+        <!-- Acciones de Calendarizaciones -->
+        <insert tableName="seg_rol">
+            <column name="name" value="CALENDARIZATION_CREATE"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="CALENDARIZATION_READ"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="CALENDARIZATION_LIST"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="CALENDARIZATION_UPDATE"/>
+        </insert>
+        <insert tableName="seg_rol">
+            <column name="name" value="CALENDARIZATION_DELETE"/>
+        </insert>
+
+        <insert tableName="seg_usuario">
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$10$e6Ijw.dlWTn8KkEsbF3w9uDgNGFSz/gXV3BVrR/LBElZOmOAtRL4S"/> <!--123456-->
+            <column name="name" value="Administrador"/>
+        </insert>
+        <insert tableName="seg_usuario">
+            <column name="username" value="doctor"/>
+            <column name="password" value="$2a$10$e6Ijw.dlWTn8KkEsbF3w9uDgNGFSz/gXV3BVrR/LBElZOmOAtRL4S"/>
+            <column name="name" value="Dr. Sistema"/>
+        </insert>
+        <insert tableName="seg_usuario">
+            <column name="username" value="patient"/>
+            <column name="password" value="$2a$10$e6Ijw.dlWTn8KkEsbF3w9uDgNGFSz/gXV3BVrR/LBElZOmOAtRL4S"/>
+            <column name="name" value="Paciente Demo"/>
+        </insert>
+
+        <!-- Admin: Acceso a todas las acciones -->
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="1"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="2"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="3"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="4"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="5"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="6"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="7"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="8"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="9"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="10"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="1"/>
+            <column name="rol_id" value="11"/>
+        </insert>
+        
+        <!-- Doctor: Ver pacientes, gestionar citas y ver calendarizaciones -->
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="2"/>
+            <column name="rol_id" value="2"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="2"/>
+            <column name="rol_id" value="4"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="2"/>
+            <column name="rol_id" value="5"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="2"/>
+            <column name="rol_id" value="6"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="2"/>
+            <column name="rol_id" value="8"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="2"/>
+            <column name="rol_id" value="9"/>
+        </insert>
+        
+        <!-- Patient: Crear y cancelar citas, ver calendarizaciones -->
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="3"/>
+            <column name="rol_id" value="3"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="3"/>
+            <column name="rol_id" value="4"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="3"/>
+            <column name="rol_id" value="6"/>
+        </insert>
+        <insert tableName="seg_usuario_rol">
+            <column name="usuario_id" value="3"/>
+            <column name="rol_id" value="8"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

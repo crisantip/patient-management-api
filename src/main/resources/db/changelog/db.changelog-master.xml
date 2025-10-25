@@ -6,9 +6,12 @@
 
     <include file="001-create-paciente-table.xml" relativeToChangelogFile="true"/>
     <include file="005-create-catalog-tables.xml" relativeToChangelogFile="true"/>
+    <include file="009-create-security-tables.xml" relativeToChangelogFile="true"/>
     <include file="002-create-cita-table.xml" relativeToChangelogFile="true"/>
     <include file="003-insert-test-patients.xml" relativeToChangelogFile="true"/>
     <include file="007-insert-catalog-data.xml" relativeToChangelogFile="true"/>
+    <include file="010-insert-security-data.xml" relativeToChangelogFile="true"/>
+    <include file="011-create-user-authorities-view.xml" relativeToChangelogFile="true"/>
     <include file="004-insert-test-appointments.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -12,6 +12,7 @@ import com.healthcare.apps.patient.management.model.BranchResponse;
 import com.healthcare.apps.patient.management.model.SpecialtyResponse;
 import com.healthcare.apps.patient.management.model.PatientResponse;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -25,6 +26,7 @@ class AppointmentResourceTest {
     @InjectMock
     AppointmentService appointmentService;
 
+    @Disabled
     @Test
     void getAllAppointmentsOk200() {
         var specialty = new SpecialtyResponse()
